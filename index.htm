@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Test</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://code.createjs.com/createjs-2015.05.21.min.js"></script>
+<script src="fparticles.js"></script>
+
+<script>
+$(function() {
+	var canvas = document.getElementById('canvas');
+	var stage = new createjs.Stage(canvas);
+	
+	var debug = null;
+	
+	var ps = new createjs.fParticleSystem({
+		psysLife : 0,
+		pLife : { min: 500, max: 800 },
+		psysPosition : { x: 640-250, y: 360+60 }, 
+		psysPositionOffsetX : { min: -20, max: 20 },
+		psysPositionOffsetY : { min: -20, max: 20 },
+		pVelocityY : { min: 0, max: -10 }, 
+		pVelocityX : { min: -1, max: 1 },
+		pStartRadius : { min: 50, max: 50 },
+		pEndRadius: {min:0,max:0},
+		pGravity: {amount:1, time:1000}, 
+		pTurbulence: {min:-3, max:3}, 
+		psysRate : 100, 
+		pStartColor : {
+			min: new createjs.RGBA(230,50,0,0), 
+			max: new createjs.RGBA(255,230,0,255) 
+		},
+		pEndColor : {  
+			min: new createjs.RGBA(100,0,0,0),
+			max: new createjs.RGBA(255,128,0,255)    
+		}  
+	});
+	
+	stage.addChild(ps.container); 
+	
+	createjs.Ticker.setFPS(60);   
+	createjs.Ticker.addEventListener("tick", function() { 
+		ps.update();
+		
+		if(debug !== null){
+			stage.removeChild(debug);
+		}
+		debug = new createjs.Text("ps.container.children.length: "+ps.container.children.length+"\nps.particles.length: "+ps.particles.length, 18+"px Comic Sans MS", "#FFF");
+		stage.addChild(debug); 
+		
+		stage.update();
+	});
+});
+</script>
+<style type="text/css">
+#canvas {
+	margin: 0 auto;
+	display: block;
+    background: #000 ;
+}
+</style>
+</head>
+
+<body>
+<canvas id="canvas" width="1280" height="720"></canvas>
+
+</body>
+</html>
